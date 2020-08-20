@@ -671,10 +671,16 @@ gs_add_outputfile_control_path(gs_memory_t *mem, const char *fname)
            if (code < 0)
                return code;
            break;
+           code = gs_add_control_path(mem, gs_permit_file_control, f);
+           if (code < 0)
+               return code;
         }
         if (!IS_WHITESPACE(f[i]))
             break;
     }
+    code = gs_add_control_path(mem, gs_permit_file_control, fp);
+    if (code < 0)
+        return code;
     return gs_add_control_path(mem, gs_permit_file_writing, fp);
 }
 
@@ -706,11 +712,17 @@ gs_remove_outputfile_control_path(gs_memory_t *mem, const char *fname)
            code = gs_remove_control_path(mem, gs_permit_file_writing, f);
            if (code < 0)
                return code;
+           code = gs_remove_control_path(mem, gs_permit_file_control, f);
+           if (code < 0)
+               return code;
            break;
         }
         if (!IS_WHITESPACE(f[i]))
             break;
     }
+    code = gs_remove_control_path(mem, gs_permit_file_control, fp);
+    if (code < 0)
+        return code;
     return gs_remove_control_path(mem, gs_permit_file_writing, fp);
 }
 
